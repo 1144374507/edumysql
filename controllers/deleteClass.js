@@ -27,6 +27,20 @@ let deleteStudent = async (req, res) => {
 
   })
 }
+let deleteStudent2 = async (req, res) => {
+  let sql = 'delete  from students where schoolNumber=?';
+  let sqlArr = req.params.schoolNumber;
+  dbConfig.base(sql, sqlArr, (results) => {
+    dbConfig.base('delete  from classmenbel where schoolNumber=?', sqlArr, (results) => {
+      res.send({
+        code: 200,
+        success: true,
+        msg: '删除成功'
+      })
+
+    })
+  })
+}
 let deleteTeacher = async (req, res) => {
   let sql = 'delete  from teachermessage where cid=?';
   let sqlArr = req.params.cid;
@@ -42,7 +56,8 @@ let deleteTeacher = async (req, res) => {
 }
 
 module.exports = {
-  deleteClass, 
+  deleteClass,
   deleteStudent,
-  deleteTeacher
+  deleteTeacher,
+  deleteStudent2
 };
