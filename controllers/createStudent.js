@@ -95,13 +95,13 @@ let createStudentChat = async (req, res) => {
       res.send({
         code: 200,
         success: true,
-        msg: '添加成功'
+        msg: '操作成功'
       })
     } else {
       res.send({
         code: 505,
         success: false,
-        msg: '添加失败'
+        msg: '操作失败'
       })
     }
 
@@ -123,7 +123,7 @@ let createStudentOther = async (req, res) => {
       qq,
       tel,
       email,
-      postcode, 
+      postcode,
       schoolNumber
     ]
   dbConfig.base(sql, data, (results) => {
@@ -131,13 +131,13 @@ let createStudentOther = async (req, res) => {
       res.send({
         code: 200,
         success: true,
-        msg: '添加成功'
+        msg: '操作成功'
       })
     } else {
       res.send({
         code: 505,
         success: false,
-        msg: '添加失败'
+        msg: '操作失败'
       })
     }
 
@@ -163,9 +163,42 @@ let getBufferSchoolNumber = (req, res) => {
 
 }
 
+// 更新学生的入学信息
+let updataStudentChat = async (req, res) => {
+
+  let {
+    name, englishName, sex, height, weight, schoolNumber, idCardNum
+  } = req.body;
+  let data =
+    [
+      name, englishName, sex, height, weight, idCardNum,schoolNumber
+    ]
+ 
+  let sql = 'update students set name= ?,englishName= ?,sex= ?,height= ? ,weight= ?,idCardNum= ? where schoolNumber= ?'
+
+  dbConfig.base(sql, data, (results) => {
+    if (results.protocol41) {
+      res.send({
+        code: 200,
+        success: true,
+        msg: '修改成功'
+      })
+    } else {
+      res.send({
+        code: 505,
+        success: false,
+        msg: '修改失败'
+      })
+    }
+
+  })
+}
+
+
 module.exports = {
   createStudent,
   createStudentChat,
   createStudentOther,
   getBufferSchoolNumber,
+  updataStudentChat
 };

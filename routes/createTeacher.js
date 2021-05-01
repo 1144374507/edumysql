@@ -4,6 +4,7 @@ var createTeacher = require('../controllers/createTeacher')
  
 
 router.post('/base/', createTeacher.createTeacher);
+router.post('/base/updata/', createTeacher.updataTeacherBase);
 router.post('/other/', createTeacher.createTeacherOther);
 router.get('/getBufferSchoolNumber/', createTeacher.getBufferSchoolNumber);
 module.exports = router;

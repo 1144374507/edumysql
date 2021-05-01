@@ -11,7 +11,9 @@ router.get('/getSchedule/:pid', getSchedule.getSchedule);
 router.post('/updataSchedule/', updataSchedule.updataSchedule);
 router.delete('/deleteClass/:id', deleteClass.deleteClass);
 router.delete('/deleteClass/deleteStudent/:cid', deleteClass.deleteStudent);
+router.delete('/deleteClass/deleteStudent2/:schoolNumber', deleteClass.deleteStudent2);
 router.delete('/deleteClass/deleteTeacher/:cid', deleteClass.deleteTeacher);
+router.delete('/deleteClass/deleteTeacher2/:schoolNumber', deleteClass.deleteTeacher2);
 
 
 

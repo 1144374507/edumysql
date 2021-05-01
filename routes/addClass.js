@@ -12,6 +12,7 @@ router.post('/addTeachers', addClass.addTeachers);
 router.get('/getStudents/', getStudents.getStudents);
 router.get('/getStudents2/', getStudents.getStudents2);
 router.get('/getTeachers/', getTeachers.getTeachers);
+router.get('/getTeachers2/', getTeachers.getTeachers2);
 router.post('/createSchedule', createSchedule.createSchedule);
 
 module.exports = router;

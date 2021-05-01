@@ -19,11 +19,11 @@ let createTeacher = async (req, res) => {
     } else {
       let sql = `insert into teachers(name,englishName,sex,height,weight,schoolNumber,idCardNum,courseName ) values(?,?,?,?,?,?,?,?)`;
       let {
-        name, englishName, sex, height, weight, schoolNumber, idCardNum,courseName
+        name, englishName, sex, height, weight, schoolNumber, idCardNum, courseName
       } = req.body;
       let data =
         [
-          name, englishName, sex, height, weight, schoolNumber, idCardNum,courseName
+          name, englishName, sex, height, weight, schoolNumber, idCardNum, courseName
         ]
       let flog = false
       resoult.map(item => {
@@ -79,7 +79,7 @@ let createTeacher = async (req, res) => {
 
 }
 
- 
+
 // 添加老师的联系方式
 let createTeacherOther = async (req, res) => {
   // console.log(req.body, 'req.body');
@@ -96,7 +96,7 @@ let createTeacherOther = async (req, res) => {
       qq,
       tel,
       email,
-      postcode, 
+      postcode,
       schoolNumber
     ]
   dbConfig.base(sql, data, (results) => {
@@ -136,8 +136,39 @@ let getBufferSchoolNumber = (req, res) => {
 
 }
 
+// 更新学生的入学信息
+let updataTeacherBase = async (req, res) => {
+
+  let {
+    name, englishName, sex, height, weight, schoolNumber, idCardNum
+  } = req.body;
+  let data =
+    [
+      name, englishName, sex, height, weight, idCardNum, schoolNumber
+    ]
+
+  let sql = 'update teachers set name= ?,englishName= ?,sex= ?,height= ? ,weight= ?,idCardNum= ? where schoolNumber= ?'
+
+  dbConfig.base(sql, data, (results) => {
+    if (results.protocol41) {
+      res.send({
+        code: 200,
+        success: true,
+        msg: '修改成功'
+      })
+    } else {
+      res.send({
+        code: 505,
+        success: false,
+        msg: '修改失败'
+      })
+    }
+
+  })
+}
 module.exports = {
   createTeacher,
   createTeacherOther,
   getBufferSchoolNumber,
+  updataTeacherBase
 };
