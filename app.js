@@ -11,6 +11,7 @@ var getClass = require('./routes/getClass');
 var addClass = require('./routes/addClass');
 var createStudent = require('./routes/createStudent');
 var createTeacher = require('./routes/createTeacher');
+var getMark = require('./routes/getMark');
 const cors = require('cors');
 var app = express();
 
@@ -42,6 +43,7 @@ app.use('/teacherManagement', getClass);
 app.use('/addClass', addClass);
 app.use('/createStudent', createStudent);
 app.use('/createTeacher', createTeacher);
+app.use('/getMark', getMark);
 
  
 server.listen('3000')

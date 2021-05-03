@@ -38,7 +38,7 @@ let addClass = async (req, res) => {
       }
       console.log(data1, 'data1');
       // 为班级添加 老师
-      let sql2 = `insert into teacherMessage(tel,names,schoolNumber,sex,courseName,office,pid) values ?`;
+      let sql2 = `insert into teacherMessage(tel,names,schoolNumber,sex,courseName,office,pid,classes,cid) values ?`;
       let { teacherMessage
       } = req.body;
       let data2 = teacherMessage
