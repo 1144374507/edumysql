@@ -4,10 +4,12 @@ var classes =require('../controllers/getClass')
 var deleteClass =require('../controllers/deleteClass')
 var getSchedule =require('../controllers/getSchedule')
 var updataSchedule =require('../controllers/updataSchedule')
+// var getPid =require('../controllers/getPid')
 
 router.get('/', classes.getClass);
 router.get('/:grades', classes.getSearchGrade);
 router.get('/getSchedule/:pid', getSchedule.getSchedule);
+// router.get('/getPid/', getPid.getPid);
 router.post('/updataSchedule/', updataSchedule.updataSchedule);
 router.delete('/deleteClass/:id', deleteClass.deleteClass);
 router.delete('/deleteClass/deleteStudent/:cid', deleteClass.deleteStudent);
