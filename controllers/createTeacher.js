@@ -30,7 +30,7 @@ let createTeacher = async (req, res) => {
         if (item.schoolNumber == schoolNumber) {
           res.send({
             success: false,
-            msg: `检查学号：${schoolNumber}是否重复！`
+            msg: `检查工号：${schoolNumber}是否重复！`
           })
           flog = true
           return
@@ -57,11 +57,34 @@ let createTeacher = async (req, res) => {
               dbConfig.base(sqls, datax, (results) => { })
             })
 
-            res.send({
-              code: 200,
-              success: true,
-              msg: '添加成功'
-            })
+            // res.send({
+            //   code: 200,
+            //   success: true,
+            //   msg: '添加成功'
+            // })
+            const userName = schoolNumber
+            const passWord = '123456'
+            const root = 'true'
+            let data4 =
+              [
+                schoolNumber, userName, passWord, root
+              ]
+            let sql4 = `insert into usercount(schoolNumber,userName,passWord,root ) values(?,?,?,?)`;
+
+            var callBack = (err, resoult) => {
+              if (err) {
+                res.send({
+                  success: false,
+                  msg: '创建老师登录账号失败'
+                })
+              } else {
+                res.send({
+                  success: true,
+                  msg: '创建老师成功'
+                })
+              }
+            }
+            dbConfig2.sqlConnect(sql4, data4, callBack);
           } else {
             res.send({
               code: 505,
@@ -136,7 +159,7 @@ let getBufferSchoolNumber = (req, res) => {
 
 }
 
-// 更新学生的入学信息
+// 更新老师的基础信息
 let updataTeacherBase = async (req, res) => {
 
   let {

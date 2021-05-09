@@ -57,16 +57,45 @@ let createStudent = async (req, res) => {
               dbConfig.base(sqls, datax, (results) => { })
             })
 
-            res.send({
-              code: 200,
-              success: true,
-              msg: '添加成功'
-            })
+            // res.send({
+            //   code: 200,
+            //   success: true,
+            //   msg: '添加成功'
+            // })
+
+            
+            const userName = schoolNumber
+            const passWord = '123456'
+            const root = 'false'
+            let data4 =
+              [
+                schoolNumber, userName, passWord, root
+              ]
+            let sql4 = `insert into usercount(schoolNumber,userName,passWord,root ) values(?,?,?,?)`;
+
+            var callBack = (err, resoult) => {
+              if (err) {
+                res.send({
+                  success: false,
+                  msg: '创建学生登录账号失败'
+                })
+              } else {
+                res.send({
+                  success: true,
+                  msg: '创建学生成功'
+                })
+              }
+            }
+            dbConfig2.sqlConnect(sql4, data4, callBack);
+
+
+
+
           } else {
             res.send({
               code: 505,
               success: false,
-              msg: '添加失败'
+              msg: '创建学生失败'
             })
           }
 
@@ -171,9 +200,9 @@ let updataStudentChat = async (req, res) => {
   } = req.body;
   let data =
     [
-      name, englishName, sex, height, weight, idCardNum,schoolNumber
+      name, englishName, sex, height, weight, idCardNum, schoolNumber
     ]
- 
+
   let sql = 'update students set name= ?,englishName= ?,sex= ?,height= ? ,weight= ?,idCardNum= ? where schoolNumber= ?'
 
   dbConfig.base(sql, data, (results) => {

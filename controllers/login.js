@@ -12,7 +12,6 @@ var login = (req, res) => {
     if (err) {
       res.send({
         success: false
-
       })
     } else {
       if (data.length == 0) {
@@ -25,7 +24,8 @@ var login = (req, res) => {
         token.setToken(userName, data[0].schoolNumber).then(token => {
           res.send({
             token,
-            success: true
+            success: true,
+            root:data[0].root
           })
         })
       } else {

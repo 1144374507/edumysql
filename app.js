@@ -14,6 +14,8 @@ var createTeacher = require('./routes/createTeacher');
 var getMark = require('./routes/getMark');
 var getPid = require('./routes/getPid');
 var login = require('./routes/login');
+var getUserData = require('./routes/getUserData');
+var updataPassWord = require('./routes/updataPassWord');
 
 const cors = require('cors');
 var app = express();
@@ -97,6 +99,8 @@ app.use('/createTeacher', createTeacher);
 app.use('/getMark', getMark);
 app.use('/getPid', getPid);
 app.use('/login', login);
+app.use('/getUserData', getUserData);
+app.use('/updataPassWord', updataPassWord);
 
 
 server.listen('3000')
