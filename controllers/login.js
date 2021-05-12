@@ -1,12 +1,21 @@
 var dbConfig = require('../util/dbconfig');
 var token = require('../token/token')
+const bcrypt= require('bcryptjs')
+const CryptoJS= require('crypto-js')
+// import {encrypt,decrypt} from '../util/encrpt'
+const decrypt= require('../util/encrpt')
+
+
 //登录
 var login = (req, res) => {
   var sql = 'select * from usercount where userName=?';
   const {
     userName,
-    passWord
+    passWord:jmpassWord
   } = req.body
+ 
+  var passWord =decrypt.decrypt(jmpassWord)
+  console.log('passWord',passWord);
   let data = [userName]
   var callBack = (err, data) => {
     if (err) {
