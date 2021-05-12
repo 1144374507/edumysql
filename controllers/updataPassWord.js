@@ -1,12 +1,17 @@
 var dbConfig = require('../util/dbconfig');
+const decrypt= require('../util/encrpt')
+
 // 编辑成绩单
 let updataPassWord = async (req, res) => {
   var sql = 'select * from usercount where userName=?';
   const {
     userName,
-    passWord,
-    newPassWord
+    passWord:oldPassWord,
+    newPassWord:berNewPassWord
   } = req.body
+  var passWord =decrypt.decrypt(oldPassWord)
+  var newPassWord =decrypt.decrypt(berNewPassWord)
+
   let data = [userName]
   var callBack = (err, data) => {
     console.log(data,'data');
