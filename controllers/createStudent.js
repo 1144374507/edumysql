@@ -26,6 +26,7 @@ let createStudent = async (req, res) => {
           name, englishName, sex, height, weight, schoolNumber, idCardNum
         ]
       let flog = false
+      // 检查学号是否重复
       resoult.map(item => {
         if (item.schoolNumber == schoolNumber) {
           res.send({
@@ -40,9 +41,6 @@ let createStudent = async (req, res) => {
       if (!flog) {
         dbConfig.base(sql, data, (results) => {
           if (results.protocol41) {
-
-
-
 
             // 缓存学号
             let sqlx = `insert into buffer(schoolNumber ) values(?)`;
@@ -63,7 +61,7 @@ let createStudent = async (req, res) => {
             //   msg: '添加成功'
             // })
 
-            
+
             const userName = schoolNumber
             const passWord = '123456'
             const root = 'false'
@@ -223,11 +221,108 @@ let updataStudentChat = async (req, res) => {
   })
 }
 
+// 批量添加学生
+let batchCreateStudent = async (req, res) => {
+  let flag = false
+  console.log(req.body, 'req.body');
+  for (let item of req.body.list) {
+    let {
+      name,
+      englishName,
+      // age,
+      // classes,
+      sex,
+      weight,
+      height,
+      grades,
+      admissionGrade,
+      admissionData,
+      overseas,
+      schoolNumber,
+      idCardNum,
+      qq,
+      email,
+      postcode,
+      profile,
+      tel,
+      homepage,
+    } = item
+    let data =
+      [
+        name,
+        englishName,
+        weight,
+        // age,
+        // classes,
+        height,
+        sex,
+        grades,
+        admissionGrade,
+        admissionData,
+        overseas,
+        schoolNumber,
+        idCardNum,
+        qq,
+        email,
+        postcode,
+        profile,
+        homepage,
+        tel,
+      ]
+
+    let sql = `insert into students(
+        name,
+        englishName,
+        weight,
+        height,
+        sex,
+        grades,
+        admissionGrade,
+        admissionData,
+        overseas,
+        schoolNumber,
+        idCardNum,
+        qq,
+        email,
+        postcode,
+        profile,
+        homepage,
+        tel
+        ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+    dbConfig.base(sql, data, (results) => {
+      if (results.protocol41) {
+        flag = true
+      } else {
+        flag = false
+      }
+
+
+    })
+  }
+  setTimeout(() => {
+    if (flag) {
+      res.send({
+        code: 200,
+        success: true,
+        msg: '批量添加成功'
+      })
+    } else {
+      res.send({
+        code: 505,
+        success: false,
+        msg: '批量添加失败'
+      })
+    }
+  }, 100);
+}
+
 
 module.exports = {
   createStudent,
   createStudentChat,
   createStudentOther,
   getBufferSchoolNumber,
-  updataStudentChat
+  updataStudentChat,
+  batchCreateStudent
 };

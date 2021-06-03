@@ -8,4 +8,5 @@ router.post('/chat/', createStudent.createStudentChat);
 router.post('/base/updata', createStudent.updataStudentChat);
 router.post('/other/', createStudent.createStudentOther);
 router.get('/getBufferSchoolNumber/', createStudent.getBufferSchoolNumber);
+router.post('/batchCreateStudent/', createStudent.batchCreateStudent);
 module.exports = router;
