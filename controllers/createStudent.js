@@ -223,98 +223,154 @@ let updataStudentChat = async (req, res) => {
 
 // 批量添加学生
 let batchCreateStudent = async (req, res) => {
+
   let flag = false
+  // let createStudentAccount = false
+  let onlySchoolNumbel = false
   console.log(req.body, 'req.body');
   for (let item of req.body.list) {
-    let {
-      name,
-      englishName,
-      // age,
-      // classes,
-      sex,
-      weight,
-      height,
-      grades,
-      admissionGrade,
-      admissionData,
-      overseas,
-      schoolNumber,
-      idCardNum,
-      qq,
-      email,
-      postcode,
-      profile,
-      tel,
-      homepage,
-    } = item
-    let data =
-      [
-        name,
-        englishName,
-        weight,
-        // age,
-        // classes,
-        height,
-        sex,
-        grades,
-        admissionGrade,
-        admissionData,
-        overseas,
-        schoolNumber,
-        idCardNum,
-        qq,
-        email,
-        postcode,
-        profile,
-        homepage,
-        tel,
-      ]
-
-    let sql = `insert into students(
-        name,
-        englishName,
-        weight,
-        height,
-        sex,
-        grades,
-        admissionGrade,
-        admissionData,
-        overseas,
-        schoolNumber,
-        idCardNum,
-        qq,
-        email,
-        postcode,
-        profile,
-        homepage,
-        tel
-        ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-
-    dbConfig.base(sql, data, (results) => {
-      if (results.protocol41) {
-        flag = true
+    const { schoolNumber } = item
+    //查询学生
+    var sql1 = 'select * from students';
+    var sqlArr1 = [];
+    var callBack = (err, resoult) => {
+      if (err) {
+        res.send({
+          success: false,
+          msg: '查询学生失败'
+        })
+        return
       } else {
-        flag = false
+
+        // 检查学号是否重复
+        resoult.map(item => {
+          if (item.schoolNumber == schoolNumber) {
+            res.send({
+              success: false,
+              msg: `检查学号：${schoolNumber}是否重复！`
+            })
+            onlySchoolNumbel = true
+            return
+          }
+        })
       }
-
-
-    })
+    }
+    dbConfig2.sqlConnect(sql1, sqlArr1, callBack);
   }
   setTimeout(() => {
-    if (flag) {
-      res.send({
-        code: 200,
-        success: true,
-        msg: '批量添加成功'
-      })
-    } else {
-      res.send({
-        code: 505,
-        success: false,
-        msg: '批量添加失败'
-      })
+    if (!onlySchoolNumbel) {
+      for (let item of req.body.list) {
+        let {
+          name,
+          englishName,
+          // age,
+          // classes,
+          sex,
+          weight,
+          height,
+          grades,
+          admissionGrade,
+          admissionData,
+          overseas,
+          schoolNumber,
+          idCardNum,
+          qq,
+          email,
+          postcode,
+          profile,
+          tel,
+          homepage,
+        } = item
+        let data =
+          [
+            name,
+            englishName,
+            weight,
+            // age,
+            // classes,
+            height,
+            sex,
+            grades,
+            admissionGrade,
+            admissionData,
+            overseas,
+            schoolNumber,
+            idCardNum,
+            qq,
+            email,
+            postcode,
+            profile,
+            homepage,
+            tel,
+          ]
+
+        let sql = `insert into students(
+            name,
+            englishName,
+            weight,
+            height,
+            sex,
+            grades,
+            admissionGrade,
+            admissionData,
+            overseas,
+            schoolNumber,
+            idCardNum,
+            qq,
+            email,
+            postcode,
+            profile,
+            homepage,
+            tel
+            ) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+        let callBack = (err, results) => {
+          if (err) {
+            res.send({
+              code: 505,
+              success: false,
+              msg: `创建学生：${name}失败！！`
+            })
+            flag = true
+            return
+          } else {
+            const userName = schoolNumber
+            const passWord = '123456'
+            const root = 'false'
+            let data4 =
+              [
+                schoolNumber, userName, passWord, root
+              ]
+            let sql4 = `insert into usercount(schoolNumber,userName,passWord,root ) values(?,?,?,?)`;
+
+            var callBack = (err, resoult) => {
+              if (err) {
+                res.send({
+                  success: false,
+                  msg: `创建学生${name}登录账号失败`
+                })
+                return
+              }
+            }
+            dbConfig2.sqlConnect(sql4, data4, callBack);
+          }
+        }
+        dbConfig2.sqlConnect(sql, data, callBack);
+      }
+      setTimeout(() => {
+        if (!flag) {
+          res.send({
+            code: 200,
+            success: true,
+            msg: '批量添加成功'
+          })
+        }
+      }, 100);
     }
   }, 100);
+
+
+
 }
 
 

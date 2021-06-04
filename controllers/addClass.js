@@ -139,6 +139,8 @@ let addStudents = async (req, res) => {
   } = req.body;
   let data1 = classmenbel
   console.log(data1[0][7]);
+  console.log(data1[0], 'jjjjj');
+
   // 查询某年级里是否存在此人
   dbConfig2.sqlConnect(`select * from classmenbel where grades = ?`, [data1[0][7]], (err, data) => {
     console.log(err);
@@ -152,11 +154,11 @@ let addStudents = async (req, res) => {
             res.send({
               code: 400,
               success: false,
-              msg: `无法添加${j[1]}，在${data1[0][7]}已存在，学号为${j[0]}的学生。`
+              msg: `无法添加${j[1]}，在${data1[0][7]}已存在，学号为${j[2]}的学生。`
             })
             isBreak = true
             break
-          }  
+          }
         }
         if (isBreak) {
           break
@@ -164,17 +166,37 @@ let addStudents = async (req, res) => {
       }
       if (!isBreak) {
         if (data1.length > 0) {
-          dbConfig.base(sql1, [data1], (results) => {
-            data1.map(item => {
-              // 为students 添加 classes 信息
-              dbConfig.base(`update students set classes=? where schoolNumber=${item[2]}`, [item[5]], (results) => {
-                res.send({
-                  code: 200,
-                  success: true,
-                  msg: '添加学生成功'
-                })
+          dbConfig2.sqlConnect(sql1, [data1], (err, results) => {
+            if (err) {
+              res.send({
+                code: 200,
+                success: false,
+                msg: '添加学生失败'
               })
-            })
+              return
+            }
+            let flag = false
+            for (let item of data1) {
+              // 为students 添加 classes 信息
+              dbConfig2.sqlConnect(`update students set classes=? where schoolNumber=${item[2]}`, [item[5]], (err, results) => {
+                if (err) {
+                  res.send({
+                    code: 200,
+                    success: false,
+                    msg: `${item[1]}添加班级信息失败`
+                  })
+                  flag = true
+                  return
+                }
+              })
+            }
+            if(!false){
+              res.send({
+                code: 200,
+                success: true,
+                msg: `添加成功`
+              })
+            }
           })
         }
       }
